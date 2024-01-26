@@ -9,6 +9,7 @@
 name: "Mobb/CodeQL"
 
 on:
+  workflow_dispatch:
   pull_request:
     branches: ["*"]
 
@@ -26,16 +27,25 @@ jobs:
       matrix:
         language: ["csharp"]
         # CodeQL supports [ 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift' ]
-        codeql_output_filename: ["javascript.sarif"]
+        codeql_output_filename: ["csharp.sarif"]
 
     steps:
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "7.0.100"
+
       - name: Checkout repository
         uses: actions/checkout@v3
-
+      
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
+          
+      - name: Build .NET 7 project
+        run: |
+          dotnet restore
+          dotnet build
 
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v2
