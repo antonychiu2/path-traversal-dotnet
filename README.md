@@ -24,3 +24,4 @@ Mobb Fixer will immediately run and present a fix suggestion in the PR conversat
 \
 \
 <img src="mobb-fixer-demo.gif" />
+
